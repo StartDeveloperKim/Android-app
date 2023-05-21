@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".layout.MedicineResultActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/iv_result"
+            android:id="@+id/medicine_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -26,36 +26,21 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_capture"
+            android:id="@+id/btn_addData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="촬영"
-            android:onClick="clickCameraButton"/>
+            android:text="내부 저장소에 추가"
+            android:onClick="clickAddDataButton"/>
+
 
         <Button
-            android:id="@+id/btn_analyze"
+            android:id="@+id/btn_check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="분석"
-            android:onClick="clickImageAnalyzeButton"/>
-
-        <Button
-            android:id="@+id/btn_myData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="데이터"
-            android:onClick="clickMyDataButton"/>
-
-        <Button
-            android:id="@+id/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="설정"
-            android:onClick="clickSettingButton"/>
+            android:text="확인"
+            android:onClick="clickCheckButton"/>
 
     </LinearLayout>
 
