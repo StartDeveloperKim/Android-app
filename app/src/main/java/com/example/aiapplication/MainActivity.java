@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private Uri photoUri;
     private ActivityResultLauncher<Intent> resultLauncher;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                     if (photoFile != null) {
                         photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-//                        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE); // 값을 가져와주는 역할을 한다.
                         resultLauncher.launch(intent);
                     }
                 }
@@ -104,33 +104,6 @@ public class MainActivity extends AppCompatActivity {
         imageFilePath = image.getAbsolutePath();
         return image;
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-//            Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
-//            ExifInterface exif = null;
-//
-//            try {
-//                exif = new ExifInterface(imageFilePath);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            int exifOrientation;
-//            int exifDegree;
-//
-//            if (exif != null) {
-//                exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-//                exifDegree = exifOrientationToDegrees(exifOrientation);
-//            } else {
-//                exifDegree = 0;
-//            }
-//            ((ImageView) findViewById(R.id.iv_result)).setImageBitmap(rotate(bitmap, exifDegree));
-//        }
-//
-//    }
 
     private void afterTakePicture(){
         Bitmap bitmap = BitmapFactory.decodeFile(imageFilePath);
