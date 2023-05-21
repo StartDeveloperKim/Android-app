@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+import com.example.aiapplication.layout.MyDataActivity;
+import com.example.aiapplication.layout.SettingActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -157,4 +159,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    public void clickMyDataButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), MyDataActivity.class);
+        startActivity(intent);
+    }
+
+    public void clickSettingButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+        startActivity(intent);
+    }
 }
