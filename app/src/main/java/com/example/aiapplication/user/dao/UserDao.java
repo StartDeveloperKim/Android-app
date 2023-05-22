@@ -22,10 +22,13 @@ public interface UserDao {
     @Delete
     void delete(User user);
 
-    @Query("SELECT * FROM users ORDER BY CREATEAT")
+    @Query("SELECT * FROM users")
     List<User> selectAll();
 
     @Query("SELECT * FROM users WHERE ID=(:id)")
     User findById(Long id);
+
+    @Query("DELETE FROM users")
+    void deleteAll();
 
 }

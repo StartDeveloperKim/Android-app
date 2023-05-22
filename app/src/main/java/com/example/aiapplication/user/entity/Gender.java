@@ -11,4 +11,13 @@ public enum Gender {
     Gender(String gender) {
         this.gender = gender;
     }
+
+    public static Gender getInstance(String value) {
+        for (Gender gender : Gender.values()) {
+            if (gender.getGender().equals(value)) {
+                return gender;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Gender value: " + value);
+    }
 }

@@ -12,4 +12,14 @@ public enum Division {
     Division(String name) {
         this.name = name;
     }
+
+    public static Division getInstance(String value) {
+        for (Division division : Division.values()) {
+            if (division.getName().equals(value)) {
+                return division;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Division value: " + value);
+
+    }
 }

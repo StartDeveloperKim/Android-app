@@ -3,7 +3,6 @@ package com.example.aiapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,11 +24,10 @@ import com.example.aiapplication.camera.Photo;
 import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.layout.MedicineResultActivity;
 import com.example.aiapplication.layout.MyDataActivity;
-import com.example.aiapplication.layout.SettingActivity;
+import com.example.aiapplication.layout.UserActivity;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -37,12 +35,28 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_IMAGE_CAPTURE = 672;
+    private static final int TIME_INTERVAL = 2000;
+    private long backPressedTime;
 
     private ActivityResultLauncher<Intent> resultLauncher;
 
     private Photo photo;
     private ImageInfo imageInfo = ImageInfo.getInstance();
 
+    @Override
+    public void onBackPressed() {
+        long currentTime = System.currentTimeMillis();
+
+        if (backPressedTime + TIME_INTERVAL > currentTime) {
+            super.onBackPressed();
+            finish();
+        }else{
+            showToastMessage("뒤로 버튼을 두 번 눌러주세요");
+        }
+
+        backPressedTime = currentTime;
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,13 +109,12 @@ public class MainActivity extends AppCompatActivity {
     PermissionListener permissionListener = new PermissionListener() {
         @Override
         public void onPermissionGranted() {
-            Toast.makeText(getApplicationContext(), "권한이 허용되었습니다.", Toast.LENGTH_SHORT).show();
+            showToastMessage("권한이 허용되었습니다.");
         }
 
         @Override
         public void onPermissionDenied(List<String> deniedPermissions) {
-            Toast.makeText(getApplicationContext(), "권한이 거부되었습니다.", Toast.LENGTH_SHORT).show();
-
+            showToastMessage("권한이 거부되었습니다.");
         }
     };
 
@@ -132,14 +145,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickSettingButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+        Intent intent = new Intent(getApplicationContext(), UserActivity.class);
         startActivity(intent);
     }
 
     public void clickImageAnalyzeButton(View view) {
-        Log.i("MainActivity", "결과 페이지로 INTENT 시도");
+        if (imageInfo.getBitmap().isPresent()) {
+            Log.i("MainActivity", "결과 페이지로 INTENT 시도");
 
-        Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
-        startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
+            startActivity(intent);
+        }else{
+            showToastMessage("사진을 찍어야 분석이 가능합니다.");
+        }
+    }
+
+    private void showToastMessage(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

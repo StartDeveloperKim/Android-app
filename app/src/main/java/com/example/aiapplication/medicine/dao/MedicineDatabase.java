@@ -5,10 +5,13 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import com.example.aiapplication.medicine.entity.Medicine;
+import com.example.aiapplication.typeConverter.LocalDateTimeConverter;
 
 @Database(entities = {Medicine.class}, version = 1)
+@TypeConverters({LocalDateTimeConverter.class})
 public abstract class MedicineDatabase extends RoomDatabase {
 
     private static MedicineDatabase INSTANCE = null;

@@ -25,7 +25,7 @@
         </activity>
         <activity android:name=".layout.MyDataActivity"> // 기존 데이터 페이지
         </activity>
-        <activity android:name=".layout.SettingActivity"> // 회원 정보 설정 페이지
+        <activity android:name=".layout.UserActivity"> // 회원 정보 설정 페이지
         </activity>
         <activity android:name=".layout.MedicineResultActivity"> // 약 AI 인식 결과 페이지
         </activity>

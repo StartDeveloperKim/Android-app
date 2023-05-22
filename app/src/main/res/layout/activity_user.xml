@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context=".layout.MyDataActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".layout.UserActivity">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기존데이터"
+        android:text="사용자 프로필"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +19,7 @@ tools:context=".layout.MyDataActivity">
         app:layout_constraintTop_toTopOf="parent" />
 
     <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <!-- 테이블 헤더 -->
@@ -30,17 +29,23 @@ tools:context=".layout.MyDataActivity">
             android:background="#CCCCCC">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="이름"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:text="이름" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:text="나이"
-                android:padding="8dp"/>
+                android:padding="8dp"
+                android:text="알 데이터 개수" />
         </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <!-- 테이블 데이터 -->
         <TableRow
@@ -50,20 +55,19 @@ tools:context=".layout.MyDataActivity">
             android:onClick="onTableRowClick">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="John"
                 android:padding="8dp"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="310dp"
                 android:layout_height="wrap_content"
                 android:text="25"
                 android:padding="8dp"/>
         </TableRow>
 
-        <!-- 다른 데이터 행들 -->
-        <!-- ... -->
+
 
     </TableLayout>
 
@@ -75,20 +79,20 @@ tools:context=".layout.MyDataActivity">
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_addData"
+            android:id="@+id/btn_addProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickAddCustomDataButton"
-            android:text="데이터" />
+            android:onClick="clickAddProfileButton"
+            android:text="프로필 추가" />
 
         <Button
-            android:id="@+id/btn_compare"
+            android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="clickCompareButton"
-            android:text="설정" />
+            android:onClick="clickDeleteButton"
+            android:text="프로필 삭제" />
 
     </LinearLayout>
 
