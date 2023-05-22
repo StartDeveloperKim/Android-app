@@ -13,13 +13,13 @@ import lombok.Getter;
 public class Medicine {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
 
     @NonNull
     private String name;
 
     @NonNull
-    private byte[] photp;
+    private byte[] photo;
 
     @NonNull
     private LocalDateTime createDate; // 알약 체크 날짜
@@ -27,9 +27,9 @@ public class Medicine {
     @NonNull
     private Boolean isTake; // 복용여부
 
-    public Medicine(String name, byte[] photp, LocalDateTime createDate, Boolean isTake) {
+    public Medicine(String name, byte[] photo, LocalDateTime createDate, Boolean isTake) {
         this.name = name;
-        this.photp = photp;
+        this.photo = photo;
         this.createDate = createDate;
         this.isTake = isTake;
     }
