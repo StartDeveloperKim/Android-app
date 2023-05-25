@@ -38,15 +38,13 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
 
     }
 
-    public void drawTableLayoutByUserInfo(List<User> users) {
+    private void drawTableLayoutByUserInfo(List<User> users) {
         Log.i(TAG, "DrawTableLayoutByUserInfo 호출");
 
         TableLayout tableLayout = findViewById(R.id.tableLayout);
         tableLayout.removeAllViews();
 
         for (User user : users) {
-            System.out.println("user.toString() = " + user.toString());
-
             TableRow tableRow = new TableRow(getApplicationContext());
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             tableRow.setClickable(true);
@@ -54,11 +52,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
 
                 @Override
                 public void onClick(View view) {
-                    /*
-                     * TODO :: 2023-05-22
-                     *  - 테이블 로우를 클릭하면 다이어로그가 뜬다.
-                     *  - 해당 다이어로그에는 로우의 사용자정보를 조회하여 표시된다.
-                     * */
                     onTableRowClick(view, user.getId());
                 }
             });
@@ -71,7 +64,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
 
             tableLayout.addView(tableRow);
         }
-        System.out.println("TableLayout 그리기 상태체크");
     }
 
     private TextView getTextView(String text, int width) {

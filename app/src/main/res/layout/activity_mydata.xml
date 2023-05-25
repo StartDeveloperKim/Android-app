@@ -24,43 +24,44 @@ tools:context=".layout.MyDataActivity">
         android:layout_height="wrap_content">
 
         <!-- 테이블 헤더 -->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#CCCCCC">
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#CCCCCC">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이름"
-                android:padding="8dp"/>
+<!--            <TextView-->
+<!--                android:layout_width="128dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="8dp"-->
+<!--                android:text="날짜" -->
+<!--                />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="나이"
-                android:padding="8dp"/>
-        </TableRow>
+<!--            <TextView-->
+<!--                android:layout_width="285dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="8dp"-->
+<!--                android:text="이름" />-->
+<!--        </TableRow>-->
 
-        <!-- 테이블 데이터 -->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="onTableRowClick">
+<!--        &lt;!&ndash; 테이블 데이터 &ndash;&gt;-->
+<!--        <TableRow-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clickable="true"-->
+<!--            android:onClick="onMyDataTableRowClick">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="John"
-                android:padding="8dp"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="John"-->
+<!--                android:padding="8dp"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="25"
-                android:padding="8dp"/>
-        </TableRow>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="25"-->
+<!--                android:padding="8dp"/>-->
+<!--        </TableRow>-->
 
         <!-- 다른 데이터 행들 -->
         <!-- ... -->
@@ -80,7 +81,7 @@ tools:context=".layout.MyDataActivity">
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clickAddCustomDataButton"
-            android:text="데이터" />
+            android:text="데이터 추가" />
 
         <Button
             android:id="@+id/btn_compare"
@@ -88,7 +89,7 @@ tools:context=".layout.MyDataActivity">
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clickCompareButton"
-            android:text="설정" />
+            android:text="병용 확인" />
 
     </LinearLayout>
 

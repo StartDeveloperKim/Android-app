@@ -1,9 +1,6 @@
 package com.example.aiapplication.firebase;
 
-import android.util.Log;
-
 import com.example.aiapplication.medicine.dto.MedicineInfo;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirebaseRepository {
@@ -25,7 +22,7 @@ public class FirebaseRepository {
                     String name = result.get("name", String.class);
                     String info = result.get("info", String.class);
                     String dangerInfo = result.get("age_limit", String.class);
-                    MedicineInfo medicineInfo = new MedicineInfo(company, name, info, dangerInfo);
+                    MedicineInfo medicineInfo = new MedicineInfo(medicineCode, company, name, info, dangerInfo);
 
                     listener.onFirebaseDataParsed(medicineInfo);
                 });
