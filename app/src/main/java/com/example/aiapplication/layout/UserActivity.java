@@ -14,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.layout.dialog.UserProfileDialogListener;
+import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.User;
 import com.example.aiapplication.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -27,47 +29,28 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
 
     private UserService userService;
 
+    private final static String TAG = "UserActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
         userService = new UserService(getApplicationContext());
-        drawTableLayoutByUserInfo(null);
+        userService.getUsers()
+                .thenAccept(users -> { drawTableLayoutByUserInfo(users);});
 
     }
 
+    public void drawTableLayoutByUserInfo(List<User> users) {
+        Log.i(TAG, "DrawTableLayoutByUserInfo 호출");
 
-    @Override
-    public void drawTableLayoutByUserInfo(User user) {
-        Log.i("UserActivity Tag", "테이블 그리기 호출");
+        TableLayout tableLayout = findViewById(R.id.tableLayout);
+        tableLayout.removeAllViews();
 
-        try {
-            List<User> users;
-            if (user != null) {
-                users = userService.addUser(user)
-                        .thenCompose((Void) -> userService.getUsers()).get(5, TimeUnit.SECONDS);
-            }else{
-                users = userService.getUsers().get(5, TimeUnit.SECONDS);
-            }
-            for (User userInfo : users) {
-                System.out.println("userInfo.toString() = " + userInfo.toString());
-            }
-            TableLayout tableLayout = findViewById(R.id.tableLayout);
-            tableLayout.removeAllViews();
-            addTextView(tableLayout, users);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addTextView(TableLayout tableLayout, List<User> users) {
-        Log.i("UserActivity Tag", "TextView 추가 메서드 호출");
         for (User user : users) {
+            System.out.println("user.toString() = " + user.toString());
+
             TableRow tableRow = new TableRow(getApplicationContext());
             tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
             tableRow.setClickable(true);
@@ -80,15 +63,19 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
                      *  - 테이블 로우를 클릭하면 다이어로그가 뜬다.
                      *  - 해당 다이어로그에는 로우의 사용자정보를 조회하여 표시된다.
                      * */
-                    onTableRowClick(view);
+                    onTableRowClick(view, user.getId());
                 }
             });
 
-            tableRow.addView(getTextView(user.getName(), 100));
-            tableRow.addView(getTextView("25", 310)); // 나중에 프로필별 연관관계 설정을 통해 먹는 알약 개수를 알아오자 현재는 임의의 값임
+            TextView nameTextView = getTextView(user.getName(), 100);
+            TextView ageTextView = getTextView("25", 310);
+
+            tableRow.addView(nameTextView);
+            tableRow.addView(ageTextView); // 나중에 프로필별 연관관계 설정을 통해 먹는 알약 개수를 알아오자 현재는 임의의 값임
 
             tableLayout.addView(tableRow);
         }
+        System.out.println("TableLayout 그리기 상태체크");
     }
 
     private TextView getTextView(String text, int width) {
@@ -103,11 +90,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
     }
 
     public void clickAddProfileButton(View view) {
-        /*
-        * TODO :: 프로필을 등록할 수 있는 Dialog가 팝업된다.
-        *  - 지금은 임의의 데이터를 추가시키는 로직만 추가한다.
-        *  - 나중에 프론트엔드와 코드를 통합할 떄는 Dialog에 입력된 데이터를 가져와야 한다.
-        * */
         UserProfileDialogFragment userProfileDialogFragment = new UserProfileDialogFragment(this);
         userProfileDialogFragment.show(getSupportFragmentManager(), "user_profile_dialog");
     }
@@ -118,11 +100,47 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         *  - 현재는 삭제 버튼을 누르면 모든 데이터가 삭제된다.
         * */
         userService.removeAll()
-                .thenAccept((Void) -> drawTableLayoutByUserInfo(null));
+                .thenAccept((Void) -> onDismissListener());
         Toast.makeText(getApplicationContext(), "전체 데이터가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    public void onTableRowClick(View view) {
-        // TODO :: 사용자 정보를 수정할 수 있는 Dialog가 팝업된다.
+    public void onTableRowClick(View view, Long userId) {
+        Log.i(TAG, "테이블 로우 클릭" + userId);
+        userService.getUserById(userId)
+                .thenAccept(user -> {
+                    UserProfileDialogFragment userProfileDialogFragment = new UserProfileDialogFragment(this, user);
+                    userProfileDialogFragment.show(getSupportFragmentManager(), "user_profile_dialog");
+                });
     }
+
+    @Override
+    public void onDismissListener() {
+        userService.getUsers()
+                .thenAccept(users -> drawTableLayoutByUserInfo(users));
+    }
+
+    @Override
+    public void saveUserInfo(UserInfo userInfo) {
+        Log.i(TAG, "사용자 정보 저장");
+        userService.addUser(userInfo)
+                .thenCompose((Void) -> userService.getUsers())
+                .thenAccept(users -> {
+                    runOnUiThread(()-> drawTableLayoutByUserInfo(users));
+                });
+    }
+
+    @Override
+    public void updateUserInfo(UserInfo userInfo, Long userId) {
+        Log.i(TAG, "사용자 정보 수정");
+        userService.getUserById(userId)
+                .thenApply(user -> {
+                    user.update(userInfo);
+                    return user;
+                }).thenCompose((user)->userService.update(user))
+                .thenCompose((Void) -> userService.getUsers())
+                .thenAccept((users -> {
+                    runOnUiThread(() -> drawTableLayoutByUserInfo(users));
+                }));
+    }
+
 }

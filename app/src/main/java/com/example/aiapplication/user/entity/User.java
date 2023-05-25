@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.aiapplication.user.dto.UserInfo;
+
 import java.time.LocalDateTime;
 
 import lombok.Builder;
@@ -45,11 +47,21 @@ public class User {
         this.createAt = createAt;
     }
 
+    public boolean equalsGender(Gender gender) {
+        return this.gender.equals(gender.getGender());
+    }
+
+    public boolean equalsDivision(Division division) {
+        return this.division.equals(division.getName());
+    }
+
+
     // 업데이트 화면에서 정보 일괄 업데이트
-    public void updateUser(Gender gender, Division division, int age) {
-        this.gender = gender.getGender();
-        this.division = division.getName();
-        this.age = age;
+    public void update(UserInfo userInfo) {
+        this.name = userInfo.getName();
+        this.gender = userInfo.getGender().getGender();
+        this.division = userInfo.getDivision().getName();
+        this.age = userInfo.getAge();
     }
 
     public void setId(Long id) {

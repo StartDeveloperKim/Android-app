@@ -1,7 +1,12 @@
 package com.example.aiapplication.layout.dialog;
 
-import com.example.aiapplication.user.entity.User;
+import com.example.aiapplication.user.dto.UserInfo;
 
 public interface UserProfileDialogListener {
-    void drawTableLayoutByUserInfo(User user);
+
+    void onDismissListener();
+
+    void saveUserInfo(UserInfo userInfo);
+
+    void updateUserInfo(UserInfo UserInfo, Long userId);
 }
