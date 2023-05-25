@@ -20,13 +20,7 @@ public class UserService {
     }
 
     public CompletableFuture<Void> addUser(UserInfo userInfo) {
-        User user = User.builder()
-                .name(userInfo.getName())
-                .age(userInfo.getAge())
-                .createAt(LocalDateTime.now())
-                .gender(userInfo.getGender())
-                .division(userInfo.getDivision())
-                .build();
+        User user = new User(userInfo.getName(), userInfo.getGender(), userInfo.getAge(), userInfo.getDivision(), LocalDateTime.now());
 
         return CompletableFuture.runAsync(() -> db.userDao().save(user));
     }

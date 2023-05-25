@@ -6,9 +6,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import lombok.Getter;
 
 @Entity
 public class Medicine {
@@ -23,7 +20,7 @@ public class Medicine {
     private byte[] photo;
 
     @NonNull
-    private LocalDateTime createDate; // 알약 체크 날짜
+    private LocalDateTime createDate;
 
     @NonNull
     @ColumnInfo(name = "is_take", typeAffinity = ColumnInfo.INTEGER)

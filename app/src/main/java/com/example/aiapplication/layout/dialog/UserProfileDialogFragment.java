@@ -3,7 +3,6 @@ package com.example.aiapplication.layout.dialog;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +10,16 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.aiapplication.R;
-import com.example.aiapplication.layout.UserActivity;
 import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.Division;
 import com.example.aiapplication.user.entity.Gender;
 import com.example.aiapplication.user.entity.User;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class UserProfileDialogFragment extends DialogFragment {
 

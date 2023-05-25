@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "42758400780",
+    "project_id": "ai-medicine-app-project",
+    "storage_bucket": "ai-medicine-app-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42758400780:android:30f47eb1a7952ea2767729",
+        "android_client_info": {
+          "package_name": "com.example.aiapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42758400780-et7h9j5tpqfmlcfo8kt0bphcl9ebe7mt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvpdtPYAIBnidyw-taG87EwIbozMIJna0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42758400780-et7h9j5tpqfmlcfo8kt0bphcl9ebe7mt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

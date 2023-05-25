@@ -16,7 +16,6 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
@@ -25,12 +24,15 @@ import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.layout.MedicineResultActivity;
 import com.example.aiapplication.layout.MyDataActivity;
 import com.example.aiapplication.layout.UserActivity;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity {
 

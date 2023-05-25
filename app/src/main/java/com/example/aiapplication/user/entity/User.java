@@ -55,8 +55,6 @@ public class User {
         return this.division.equals(division.getName());
     }
 
-
-    // 업데이트 화면에서 정보 일괄 업데이트
     public void update(UserInfo userInfo) {
         this.name = userInfo.getName();
         this.gender = userInfo.getGender().getGender();

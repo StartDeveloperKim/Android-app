@@ -8,7 +8,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiapplication.R;
@@ -18,12 +17,9 @@ import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.User;
 import com.example.aiapplication.user.service.UserService;
 
-import java.util.ArrayList;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class UserActivity extends AppCompatActivity implements UserProfileDialogListener {
 

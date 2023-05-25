@@ -22,6 +22,141 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="286dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="0.12">
+
+            <TableRow
+                android:id="@+id/medicine_company_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="제약 회사 : " />
+
+                <TextView
+                    android:id="@+id/medicine_company"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/medicine_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="약 이름 : " />
+
+                <TextView
+                    android:id="@+id/medicine_name"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/medicine_code_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="약 코드" />
+
+                <TextView
+                    android:id="@+id/medicine_code"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/medicine_effect_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="약 효능" />
+
+                <TextView
+                    android:id="@+id/medicine_effect"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/dangerous_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="위험정보" />
+
+                <TextView
+                    android:id="@+id/dangerous"
+                    android:layout_width="186dp"
+                    android:layout_height="match_parent" />
+            </TableRow>
+        </TableLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
 

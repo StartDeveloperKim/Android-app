@@ -3,10 +3,11 @@ package com.example.aiapplication.layout;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiapplication.R;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class MyDataActivity extends AppCompatActivity {
 

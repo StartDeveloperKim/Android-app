@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiapplication.MainActivity;
 import com.example.aiapplication.R;
+
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 public class StartActivity extends AppCompatActivity {
 

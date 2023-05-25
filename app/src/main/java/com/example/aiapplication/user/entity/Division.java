@@ -2,7 +2,6 @@ package com.example.aiapplication.user.entity;
 
 import lombok.Getter;
 
-@Getter
 public enum Division {
     CHILDREN("어린이"), PREGNANT_WOMAN("임산부"), SENIOR("어르신");
 
@@ -21,5 +20,9 @@ public enum Division {
         }
         throw new IllegalArgumentException("Invalid Division value: " + value);
 
+    }
+
+    public String getName() {
+        return name;
     }
 }
