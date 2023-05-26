@@ -47,27 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- 테이블 데이터 -->
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:onClick="onTableRowClick">
-
-            <TextView
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:text="John"
-                android:padding="8dp"/>
-
-            <TextView
-                android:layout_width="310dp"
-                android:layout_height="wrap_content"
-                android:text="25"
-                android:padding="8dp"/>
-        </TableRow>
-
-
 
     </TableLayout>
 

@@ -24,6 +24,8 @@ import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.layout.MedicineResultActivity;
 import com.example.aiapplication.layout.MyDataActivity;
 import com.example.aiapplication.layout.UserActivity;
+import com.example.aiapplication.medicine.service.MedicineService;
+import com.example.aiapplication.user.service.UserService;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MedicineService.getInstance(getApplicationContext());
+        UserService.getInstance(getApplicationContext());
 
         photo = new Photo(); // 카메라 인스턴스 생성
 

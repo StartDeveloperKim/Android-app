@@ -14,12 +14,15 @@ import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.layout.dialog.UserProfileDialogListener;
 import com.example.aiapplication.user.dto.UserInfo;
+import com.example.aiapplication.user.entity.Division;
+import com.example.aiapplication.user.entity.Gender;
 import com.example.aiapplication.user.entity.User;
 import com.example.aiapplication.user.service.UserService;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class UserActivity extends AppCompatActivity implements UserProfileDialogListener {
 
@@ -32,13 +35,24 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        userService = new UserService(getApplicationContext());
+        Log.i(TAG, "UserActivity onCreate");
+        userService = UserService.getInstance(getApplicationContext());
         userService.getUsers()
-                .thenAccept(users -> { drawTableLayoutByUserInfo(users);});
+                .thenAccept(users -> {
+                    users.stream().forEach(System.out::println);
+                    drawTableLayoutByUserInfo(users);});
+
+        try {
+            List<User> users = userService.getUsers().get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    private void drawTableLayoutByUserInfo(List<User> users) {
+    public void drawTableLayoutByUserInfo(List<User> users) {
         Log.i(TAG, "DrawTableLayoutByUserInfo 호출");
 
         TableLayout tableLayout = findViewById(R.id.tableLayout);

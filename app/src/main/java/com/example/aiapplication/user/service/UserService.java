@@ -13,10 +13,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class UserService {
 
+    private static UserService USER_SERVICE;
     private UserDatabase db;
 
-    public UserService(Context context) {
+    private UserService(Context context) {
         db = UserDatabase.getInstance(context);
+    }
+
+    public static UserService getInstance(Context context) {
+        if (USER_SERVICE == null) {
+            USER_SERVICE = new UserService(context);
+        }
+        return USER_SERVICE;
     }
 
     public CompletableFuture<Void> addUser(UserInfo userInfo) {
@@ -35,6 +43,7 @@ public class UserService {
 
 
     public CompletableFuture<List<User>> getUsers() {
+        Log.i("getUsers", "사용자 정보 가져오기");
         return CompletableFuture.supplyAsync(() -> db.userDao().selectAll());
     }
 

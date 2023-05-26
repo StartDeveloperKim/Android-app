@@ -12,10 +12,19 @@ import java.util.concurrent.CompletableFuture;
 
 public class MedicineService {
 
+    private static MedicineService MEDICINE_SERVICE;
+
     private MedicineDatabase db;
 
-    public MedicineService(Context context) {
+    private MedicineService(Context context) {
         this.db = MedicineDatabase.getInstance(context);
+    }
+
+    public static MedicineService getInstance(Context context) {
+        if (MEDICINE_SERVICE == null) {
+            MEDICINE_SERVICE = new MedicineService(context);
+        }
+        return MEDICINE_SERVICE;
     }
 
     public CompletableFuture<Void> addMedicine(MedicineInfo medicineInfo, byte[] image) {

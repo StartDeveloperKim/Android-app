@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.example.aiapplication.medicine.entity.Medicine;
 import com.example.aiapplication.typeConverter.LocalDateTimeConverter;
 
-@Database(entities = {Medicine.class}, version = 1)
+@Database(entities = {Medicine.class}, version = 3)
 @TypeConverters({LocalDateTimeConverter.class})
 public abstract class MedicineDatabase extends RoomDatabase {
 
@@ -20,7 +20,9 @@ public abstract class MedicineDatabase extends RoomDatabase {
 
     public static MedicineDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), MedicineDatabase.class, "user.db").build();
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), MedicineDatabase.class, context.getFilesDir().getPath() + "/medicine.db")
+                    .fallbackToDestructiveMigration()
+                    .build();
         }
         return INSTANCE;
     }

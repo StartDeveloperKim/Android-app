@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiapplication.R;
+import com.example.aiapplication.layout.dialog.MedicineDialogFragment;
+import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.medicine.entity.Medicine;
 import com.example.aiapplication.medicine.service.MedicineService;
 
@@ -17,6 +19,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MyDataActivity extends AppCompatActivity {
 
@@ -29,10 +32,19 @@ public class MyDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mydata);
 
-        medicineService = new MedicineService(getApplicationContext());
+        medicineService = MedicineService.getInstance(getApplicationContext());
         medicineService.getMedicines()
                 .thenAccept(medicines -> {
                     drawTableLayoutByMedicineInfo(medicines);});
+
+        try {
+            List<Medicine> medicines = medicineService.getMedicines().get();
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void drawTableLayoutByMedicineInfo(List<Medicine> medicines) {
@@ -88,5 +100,10 @@ public class MyDataActivity extends AppCompatActivity {
         /*
         * TODO :: 다이어로그에 약 정보를 넘겨야 한다.
         * */
+        medicineService.getMedicineById(id)
+                .thenAccept(medicine -> {
+                    MedicineDialogFragment medicineDialogFragment = new MedicineDialogFragment(medicine);
+                    medicineDialogFragment.show(getSupportFragmentManager(), "medicine_dialog");
+                });
     }
 }

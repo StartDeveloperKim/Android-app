@@ -42,7 +42,7 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         firebaseRepository = new FirebaseRepository(this);
-        medicineService = new MedicineService(getApplicationContext());
+        medicineService = MedicineService.getInstance(getApplicationContext());
 
         company = findViewById(R.id.medicine_company);
         name = findViewById(R.id.medicine_name);

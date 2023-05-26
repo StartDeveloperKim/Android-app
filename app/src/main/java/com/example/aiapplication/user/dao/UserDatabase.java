@@ -12,7 +12,7 @@ import com.example.aiapplication.user.entity.User;
 
 import lombok.Synchronized;
 
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 2)
 @TypeConverters({LocalDateTimeConverter.class})
 public abstract class UserDatabase extends RoomDatabase {
 
@@ -20,10 +20,11 @@ public abstract class UserDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
 
-    @Synchronized
     public static UserDatabase getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), UserDatabase.class, "user.db").build();
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), UserDatabase.class, context.getFilesDir().getPath() + "/user.db")
+                    .fallbackToDestructiveMigration()
+                    .build();
         }
         return INSTANCE;
     }
