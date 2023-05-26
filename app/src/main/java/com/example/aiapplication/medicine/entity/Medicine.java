@@ -1,5 +1,8 @@
 package com.example.aiapplication.medicine.entity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -47,6 +50,10 @@ public class Medicine {
         this.dangerInfo = dangerInfo;
         this.createDate = createDate;
         this.isTake = isTake;
+    }
+
+    public Bitmap byteArrayToBitmap() {
+        return BitmapFactory.decodeByteArray(this.photo, 0, photo.length);
     }
 
     public Long getId() {

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -88,20 +89,18 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
     }
 
     public void clickAddDataButton(View view) {
-        Log.i(TAG, "데이터추가 Button Click");
-
         Bitmap bitmap = imageInfo.getBitmap().get();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
         byte[] byteArray = stream.toByteArray();
 
         medicineService.addMedicine(medicineInfo, byteArray);
+
+        Toast.makeText(getApplicationContext(), "데이터가 추가되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
     public void clickCheckButton(View view) {
-        Log.i(TAG, "확인 Button Click");
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 }

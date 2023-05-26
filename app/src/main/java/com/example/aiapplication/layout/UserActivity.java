@@ -42,14 +42,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
                     users.stream().forEach(System.out::println);
                     drawTableLayoutByUserInfo(users);});
 
-        try {
-            List<User> users = userService.getUsers().get();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
     public void drawTableLayoutByUserInfo(List<User> users) {

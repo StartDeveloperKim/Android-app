@@ -6,11 +6,13 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.MedicineDialogFragment;
+import com.example.aiapplication.layout.dialog.MedicineDialogListener;
 import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.medicine.entity.Medicine;
 import com.example.aiapplication.medicine.service.MedicineService;
@@ -20,8 +22,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public class MyDataActivity extends AppCompatActivity {
+public class MyDataActivity extends AppCompatActivity implements MedicineDialogListener {
 
     private MedicineService medicineService;
 
@@ -36,14 +40,6 @@ public class MyDataActivity extends AppCompatActivity {
         medicineService.getMedicines()
                 .thenAccept(medicines -> {
                     drawTableLayoutByMedicineInfo(medicines);});
-
-        try {
-            List<Medicine> medicines = medicineService.getMedicines().get();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -100,10 +96,26 @@ public class MyDataActivity extends AppCompatActivity {
         /*
         * TODO :: 다이어로그에 약 정보를 넘겨야 한다.
         * */
-        medicineService.getMedicineById(id)
-                .thenAccept(medicine -> {
-                    MedicineDialogFragment medicineDialogFragment = new MedicineDialogFragment(medicine);
-                    medicineDialogFragment.show(getSupportFragmentManager(), "medicine_dialog");
+        try {
+            Medicine medicine = medicineService.getMedicineById(id).get(5, TimeUnit.SECONDS);
+            MedicineDialogFragment medicineDialogFragment = new MedicineDialogFragment(medicine, this);
+            medicineDialogFragment.show(getSupportFragmentManager(), "medicine_dialog");
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteMedicineInfo(Medicine medicine) {
+        medicineService.removeMedicine(medicine)
+                .thenCompose((Void) -> medicineService.getMedicines())
+                .thenAccept(medicines -> {
+                    runOnUiThread(()-> drawTableLayoutByMedicineInfo(medicines));
                 });
+        Toast.makeText(getApplicationContext(), "약 정보가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
     }
 }

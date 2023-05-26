@@ -40,4 +40,8 @@ public class MedicineService {
     public CompletableFuture<Medicine> getMedicineById(Long id) {
         return CompletableFuture.supplyAsync(() -> db.medicineDao().findById(id));
     }
+
+    public CompletableFuture<Void> removeMedicine(Medicine medicine) {
+        return CompletableFuture.runAsync(() -> db.medicineDao().delete(medicine));
+    }
 }
