@@ -4,15 +4,21 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.example.aiapplication.R;
+import com.example.aiapplication.layout.UserActivity;
 import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.Division;
 import com.example.aiapplication.user.entity.Gender;
@@ -49,7 +55,15 @@ public class UserProfileDialogFragment extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.user_dialog, null);
 
         etName = dialogView.findViewById(R.id.et_name);
+
         etAge = dialogView.findViewById(R.id.et_age);
+        etAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setNumberPicker(view);
+            }
+        });
+
         rgGender = dialogView.findViewById(R.id.rg_gender);
         rgStatus = dialogView.findViewById(R.id.rg_status);
 
@@ -63,7 +77,15 @@ public class UserProfileDialogFragment extends DialogFragment {
                     .setPositiveButton("수정", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            listener.updateUserInfo(getUserInfoAtDialog(dialogView), user.getId());
+                            if (isAllDataInput(dialogView)) {
+                                listener.updateUserInfo(getUserInfoAtDialog(dialogView), user.getId());
+                            }
+                        }
+                    })
+                    .setNeutralButton("삭제", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            listener.removeUser(user.getId());
                         }
                     });
         }else{
@@ -71,7 +93,9 @@ public class UserProfileDialogFragment extends DialogFragment {
                     .setPositiveButton("추가", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            listener.saveUserInfo(getUserInfoAtDialog(dialogView));
+                            if (isAllDataInput(dialogView)) {
+                                listener.saveUserInfo(getUserInfoAtDialog(dialogView));
+                            }
                         }
                     });
         }
@@ -86,6 +110,31 @@ public class UserProfileDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+
+    private void setNumberPicker(View view) {
+        final NumberPicker numberPicker = new NumberPicker(view.getContext());
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(100);
+        numberPicker.setWrapSelectorWheel(false);
+
+        AlertDialog.Builder numberPickerDialog = new AlertDialog.Builder(view.getContext());
+        numberPickerDialog.setTitle("나이 선택");
+
+        LinearLayout numberPickerLayout = new LinearLayout(view.getContext());
+        numberPickerLayout.setGravity(Gravity.CENTER);
+        numberPickerLayout.addView(numberPicker);
+        numberPickerDialog.setView(numberPickerLayout);
+
+        numberPickerDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                etAge.setText(String.valueOf(numberPicker.getValue()));
+            }
+        });
+
+        numberPickerDialog.setNegativeButton("취소", null);
+        numberPickerDialog.show();
+    }
 
 
     private void checkDivisionRadioBtn(View dialogView) {
@@ -110,9 +159,16 @@ public class UserProfileDialogFragment extends DialogFragment {
         genderRadioBtn.setChecked(true);
     }
 
-    private UserInfo getUserInfoAtDialog(View dialogView) {
-        // TODO :: 입력받지 못했거나, 선택 받지 못한 항목이 있다면 그것에 대한 오류 메시지를 띄우자
+    private boolean isAllDataInput(View view) {
+        if (etName.length() != 0 && etAge.getText() != null && rgGender.getCheckedRadioButtonId() != RadioGroup.NO_ID && rgStatus.getCheckedRadioButtonId() != RadioGroup.NO_ID) {
+            return true;
+        }else{
+            Toast.makeText(view.getContext(), "프로필이 저장되지 않았습니다.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
 
+    private UserInfo getUserInfoAtDialog(View dialogView) {
         String name = etName.getText().toString();
         int age = Integer.parseInt(etAge.getText().toString());
 
@@ -126,6 +182,7 @@ public class UserProfileDialogFragment extends DialogFragment {
 
         return new UserInfo(name, age, Gender.getInstance(gender), Division.getInstance(status));
     }
+
 
 
 }

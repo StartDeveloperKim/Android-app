@@ -9,4 +9,6 @@ public interface UserProfileDialogListener {
     void saveUserInfo(UserInfo userInfo);
 
     void updateUserInfo(UserInfo UserInfo, Long userId);
+
+    void removeUser(Long id);
 }

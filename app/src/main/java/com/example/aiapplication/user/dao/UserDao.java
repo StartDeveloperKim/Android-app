@@ -22,6 +22,9 @@ public interface UserDao {
     @Delete
     void delete(User user);
 
+    @Query("DELETE FROM users WHERE ID=(:id)")
+    void deleteById(Long id);
+
     @Query("SELECT * FROM users")
     List<User> selectAll();
 

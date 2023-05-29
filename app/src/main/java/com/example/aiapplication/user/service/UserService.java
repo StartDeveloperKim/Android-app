@@ -47,6 +47,10 @@ public class UserService {
         return CompletableFuture.supplyAsync(() -> db.userDao().selectAll());
     }
 
+    public CompletableFuture<Void> deleteUser(User user) {
+        return CompletableFuture.runAsync(() -> db.userDao().delete(user));
+    }
+
     public CompletableFuture<Void> removeAll() {
         return CompletableFuture.runAsync(() -> db.userDao().deleteAll());
     }

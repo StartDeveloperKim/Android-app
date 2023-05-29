@@ -3,7 +3,7 @@ package com.example.aiapplication.user.entity;
 import lombok.Getter;
 
 public enum Division {
-    CHILDREN("어린이"), PREGNANT_WOMAN("임산부"), SENIOR("어르신");
+    ADULT("어른"), CHILDREN("어린이"), PREGNANT_WOMAN("임산부"), SENIOR("어르신");
 
     private final String name;
 

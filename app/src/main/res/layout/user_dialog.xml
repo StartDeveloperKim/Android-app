@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="20dp">
 
     <EditText
         android:id="@+id/et_name"
@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:hint="Age"
         android:inputType="number" />
+
 
     <RadioGroup
         android:id="@+id/rg_gender"
@@ -41,7 +42,13 @@
         android:id="@+id/rg_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_adult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="어른" />
 
         <RadioButton
             android:id="@+id/rb_child"
@@ -62,5 +69,6 @@
             android:text="어르신" />
 
     </RadioGroup>
+
 
 </LinearLayout>

@@ -2,7 +2,9 @@ package com.example.aiapplication.layout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,7 +23,9 @@ import com.example.aiapplication.user.service.UserService;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class UserActivity extends AppCompatActivity implements UserProfileDialogListener {
@@ -39,7 +43,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         userService = UserService.getInstance(getApplicationContext());
         userService.getUsers()
                 .thenAccept(users -> {
-                    users.stream().forEach(System.out::println);
                     drawTableLayoutByUserInfo(users);});
 
     }
@@ -62,15 +65,16 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
                 }
             });
 
-            TextView nameTextView = getTextView(user.getName(), 100);
-            TextView ageTextView = getTextView("25", 310);
-
-            tableRow.addView(nameTextView);
-            tableRow.addView(ageTextView); // 나중에 프로필별 연관관계 설정을 통해 먹는 알약 개수를 알아오자 현재는 임의의 값임
+            tableRow.addView(getTextView(user.getName(), 75));
+            tableRow.addView(getTextView(String.valueOf(user.getAge()), 75));
+            tableRow.addView(getTextView(user.getGender(), 75));
+            tableRow.addView(getTextView(user.getDivision(), 75));
 
             tableLayout.addView(tableRow);
         }
     }
+
+
 
     private TextView getTextView(String text, int width) {
         int widthInDp = (int) (width * getResources().getDisplayMetrics().density); // dp로 변환
@@ -78,7 +82,8 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         TextView textView = new TextView(getApplicationContext());
         textView.setLayoutParams(new TableRow.LayoutParams(widthInDp, TableRow.LayoutParams.WRAP_CONTENT));
         textView.setText(text);
-        textView.setPadding(0, 0, 0, 0);
+        textView.setGravity(Gravity.CENTER);
+        textView.setPadding(10, 10, 10, 10);
 
         return textView;
     }
@@ -88,15 +93,6 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         userProfileDialogFragment.show(getSupportFragmentManager(), "user_profile_dialog");
     }
 
-    public void clickDeleteButton(View view) {
-        /*
-        * TODO :: 삭제 버튼을 누르면 리스트 옆에 삭제 버튼이 나오는 그림
-        *  - 현재는 삭제 버튼을 누르면 모든 데이터가 삭제된다.
-        * */
-        userService.removeAll()
-                .thenAccept((Void) -> onDismissListener());
-        Toast.makeText(getApplicationContext(), "전체 데이터가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-    }
 
     public void onTableRowClick(View view, Long userId) {
         Log.i(TAG, "테이블 로우 클릭" + userId);
@@ -110,7 +106,7 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
     @Override
     public void onDismissListener() {
         userService.getUsers()
-                .thenAccept(users -> drawTableLayoutByUserInfo(users));
+                .thenAccept(users -> runOnUiThread(()-> drawTableLayoutByUserInfo(users)));
     }
 
     @Override
@@ -131,6 +127,16 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
                     user.update(userInfo);
                     return user;
                 }).thenCompose((user)->userService.update(user))
+                .thenCompose((Void) -> userService.getUsers())
+                .thenAccept((users -> {
+                    runOnUiThread(() -> drawTableLayoutByUserInfo(users));
+                }));
+    }
+
+    @Override
+    public void removeUser(Long id) {
+        userService.getUserById(id)
+                .thenCompose((user) -> userService.deleteUser(user))
                 .thenCompose((Void) -> userService.getUsers())
                 .thenAccept((users -> {
                     runOnUiThread(() -> drawTableLayoutByUserInfo(users));
