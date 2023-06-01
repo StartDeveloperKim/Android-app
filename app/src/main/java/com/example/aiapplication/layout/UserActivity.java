@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.layout.dialog.UserProfileDialogListener;
+import com.example.aiapplication.user.dao.ActiveUserProfile;
 import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.Division;
 import com.example.aiapplication.user.entity.Gender;
@@ -32,12 +33,16 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
 
     private UserService userService;
 
+    private ActiveUserProfile activeUserProfile;
+
     private final static String TAG = "UserActivity";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        activeUserProfile = ActiveUserProfile.getInstance(this);
 
         Log.i(TAG, "UserActivity onCreate");
         userService = UserService.getInstance(getApplicationContext());
@@ -98,7 +103,7 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         Log.i(TAG, "테이블 로우 클릭" + userId);
         userService.getUserById(userId)
                 .thenAccept(user -> {
-                    UserProfileDialogFragment userProfileDialogFragment = new UserProfileDialogFragment(this, user);
+                    UserProfileDialogFragment userProfileDialogFragment = new UserProfileDialogFragment(this, user, activeUserProfile.getActiveUserProfileId());
                     userProfileDialogFragment.show(getSupportFragmentManager(), "user_profile_dialog");
                 });
     }
@@ -122,6 +127,11 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
     @Override
     public void updateUserInfo(UserInfo userInfo, Long userId) {
         Log.i(TAG, "사용자 정보 수정");
+        userService.getUserById(userId)
+                        .thenAccept(user -> {
+                            activeUserProfile.setActiveUserProfileId(user.getId());
+                        });
+
         userService.getUserById(userId)
                 .thenApply(user -> {
                     user.update(userInfo);

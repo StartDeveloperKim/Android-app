@@ -12,7 +12,7 @@ import com.example.aiapplication.user.entity.User;
 
 import lombok.Synchronized;
 
-@Database(entities = {User.class}, version = 2)
+@Database(entities = {User.class}, version = 4)
 @TypeConverters({LocalDateTimeConverter.class})
 public abstract class UserDatabase extends RoomDatabase {
 

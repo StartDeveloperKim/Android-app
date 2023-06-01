@@ -22,6 +22,7 @@ import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.MedicineDialogFragment;
 import com.example.aiapplication.layout.dialog.MedicineDialogListener;
 import com.example.aiapplication.medicine.entity.Medicine;
+import com.example.aiapplication.medicine.service.MedicineCombinationUtil;
 import com.example.aiapplication.medicine.service.MedicineService;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -126,7 +127,7 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
 
         checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                checkedMedicine.add(medicineCode);
+                checkedMedicine.add(medicineCode); // 약 코드가 저장
             }else{
                 checkedMedicine.remove(medicineCode);
             }
@@ -158,6 +159,10 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
         *  - checkedMedicine 리스트에 있는 약 Code들을 조합을 이용해서 조합할 수 있는 코드 목록을 생성한다.
         *  - 그 다음 데이터베이스에 해당 코드들을 보내고 데이터를 파싱해서 Dialog로 띄운다.
         * */
+        List<String> medicineCombinations = MedicineCombinationUtil.generateCombinations(checkedMedicine);
+        // 여기서 medicineCombinations 정보를 파이어베이스에 전달하여 정보를 받아온다.
+        // 그 후에 Dialog에 정보를 전달하여 정보를 띄운다.
+
     }
 
     public void onMyDataTableRowClick(View view, Long id) {

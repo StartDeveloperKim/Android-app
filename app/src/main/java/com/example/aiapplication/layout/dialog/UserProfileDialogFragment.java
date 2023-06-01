@@ -7,18 +7,17 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.example.aiapplication.R;
-import com.example.aiapplication.layout.UserActivity;
 import com.example.aiapplication.user.dto.UserInfo;
 import com.example.aiapplication.user.entity.Division;
 import com.example.aiapplication.user.entity.Gender;
@@ -34,16 +33,20 @@ public class UserProfileDialogFragment extends DialogFragment {
     private RadioGroup rgGender;
     private RadioGroup rgStatus;
 
+    private ToggleButton activeButton;
+
     private UserProfileDialogListener listener;
     private User user;
+    private Long activeUserId;
 
     public UserProfileDialogFragment(UserProfileDialogListener listener) {
         this.listener = listener;
     }
 
-    public UserProfileDialogFragment(UserProfileDialogListener listener, User user) {
+    public UserProfileDialogFragment(UserProfileDialogListener listener, User user, Long activeUerId) {
         this(listener);
         this.user = user;
+        this.activeUserId = activeUerId;
     }
 
     @NonNull
@@ -72,6 +75,7 @@ public class UserProfileDialogFragment extends DialogFragment {
             etAge.setText(String.valueOf(user.getAge()));
             checkGenderRadioBtn(dialogView);
             checkDivisionRadioBtn(dialogView);
+            setToggleButton(dialogView);
 
             builder.setTitle("프로필 수정")
                     .setPositiveButton("수정", new DialogInterface.OnClickListener() {
@@ -180,7 +184,24 @@ public class UserProfileDialogFragment extends DialogFragment {
         RadioButton selectedStatusRadioButton = dialogView.findViewById(selectedStatusId);
         String status = selectedStatusRadioButton.getText().toString();
 
+        if (activeButton != null) {
+            boolean checked = activeButton.isChecked();
+            return new UserInfo(name, age, Gender.getInstance(gender), Division.getInstance(status), checked);
+        }
+
         return new UserInfo(name, age, Gender.getInstance(gender), Division.getInstance(status));
+    }
+
+    private void setToggleButton(View view) {
+        LinearLayout linearLayout = view.findViewById(R.id.toggle_linear); // LinearLayout의 ID를 알맞게 변경해주세요
+
+        activeButton = new ToggleButton(view.getContext());
+
+        activeButton.setTextOff("프로필 비 활성화");
+        activeButton.setTextOn("프로필 활성화");
+        activeButton.setChecked((user.getId() == activeUserId));
+
+        linearLayout.addView(activeButton);
     }
 
 

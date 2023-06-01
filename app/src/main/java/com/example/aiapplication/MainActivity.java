@@ -25,6 +25,7 @@ import com.example.aiapplication.layout.MedicineResultActivity;
 import com.example.aiapplication.layout.MyDataActivity;
 import com.example.aiapplication.layout.UserActivity;
 import com.example.aiapplication.medicine.service.MedicineService;
+import com.example.aiapplication.user.dao.ActiveUserProfile;
 import com.example.aiapplication.user.service.UserService;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.gun0912.tedpermission.PermissionListener;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Photo photo;
     private ImageInfo imageInfo = ImageInfo.getInstance();
+
+    private ActiveUserProfile activeUserProfile;
 
     @Override
     public void onBackPressed() {
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         MedicineService.getInstance(getApplicationContext());
         UserService.getInstance(getApplicationContext());
 
+        activeUserProfile = ActiveUserProfile.getInstance(this);
         photo = new Photo(); // 카메라 인스턴스 생성
 
         //권한 체크

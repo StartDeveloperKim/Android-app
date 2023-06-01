@@ -13,11 +13,18 @@ public class UserInfo {
     private final Gender gender;
     private final Division division;
 
+    private Boolean isActive;
+
     public UserInfo(String name, int age, Gender gender, Division division) {
         this.name = name;
         this.age = age;
         this.gender = gender;
         this.division = division;
+    }
+
+    public UserInfo(String name, int age, Gender gender, Division division, Boolean isActive) {
+        this(name, age, gender, division);
+        this.isActive = isActive;
     }
 
     public String getName() {
@@ -34,5 +41,9 @@ public class UserInfo {
 
     public Division getDivision() {
         return division;
+    }
+
+    public Boolean getActive() {
+        return isActive;
     }
 }

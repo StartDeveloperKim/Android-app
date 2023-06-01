@@ -1,6 +1,7 @@
 package com.example.aiapplication.user.entity;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -112,4 +113,5 @@ public class User {
     public void setName(@NonNull String name) {
         this.name = name;
     }
+
 }
