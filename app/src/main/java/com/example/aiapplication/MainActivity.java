@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -145,9 +146,15 @@ public class MainActivity extends AppCompatActivity {
                 Uri photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
                 photo.setPhotoUri(photoUri);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                addCameraTextMessage();
                 resultLauncher.launch(intent);
             }
         }
+    }
+
+    private void addCameraTextMessage() {
+        TextView textView = findViewById(R.id.camera_info);
+        textView.setText("사진을 다시 찍고 싶으시면 이미지를 다시 터치해주세요");
     }
 
     public void clickMyDataButton(View view) {
