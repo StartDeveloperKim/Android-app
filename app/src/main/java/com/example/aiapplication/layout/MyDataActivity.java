@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.aiapplication.R;
 import com.example.aiapplication.layout.dialog.MedicineDialogFragment;
@@ -39,7 +41,6 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
     private MedicineService medicineService;
     private List<String> checkedMedicine;
 
-
     private Button compareButton;
 
     private static final String TAG = "MyDataActivity";
@@ -61,69 +62,65 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
     private void drawTableLayoutByMedicineInfo(List<Medicine> medicines) {
         Log.i(TAG, "drawTableLayoutByMedicineInfo");
 
-        TableLayout tableLayout = findViewById(R.id.myData_tableLayout);
-        tableLayout.removeAllViews(); // 테이블 자식 컴포넌트 전체 삭제
+        LinearLayout parentLayout = findViewById(R.id.medicine_list);
+        parentLayout.removeAllViews();
 
-
-        addTableHeader(tableLayout); // 테이블 헤더 추가
 
         for (Medicine medicine : medicines) {
-            TableRow tableRow = new TableRow(getApplicationContext());
-            tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-            tableRow.setClickable(true);
-            tableRow.setOnClickListener(new View.OnClickListener() {
+            LinearLayout childLayout = new LinearLayout(getApplicationContext());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            childLayout.setLayoutParams(layoutParams);
+            childLayout.setOrientation(LinearLayout.HORIZONTAL);
+            childLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     onMyDataTableRowClick(view, medicine.getId());
                 }
             });
 
-            tableRow.addView(getTextView(medicine.getCreateDate().format(DateTimeFormatter.ISO_DATE), "Data"));
-            tableRow.addView(getTextView(medicine.getName(), "Data"));
-            tableRow.addView(getCheckBox(medicine.getCode()));
+            childLayout.addView(getTextView(medicine.getCreateDate().format(DateTimeFormatter.ISO_DATE), 93));
+            childLayout.addView(getTextView(medicine.getName(), 188));
+            childLayout.addView(getCheckBox(medicine.getCode()));
 
-            tableLayout.addView(tableRow);
+            parentLayout.addView(childLayout);
         }
+        Log.i(TAG, "테이블 로우 그리기 끝");
     }
 
-    private void addTableHeader(TableLayout tableLayout) {
-        TableRow headerRow = new TableRow(this);
-        headerRow.setLayoutParams(new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT
-        ));
-
-        headerRow.addView(getTextView("날 짜", "Header"));
-        headerRow.addView(getTextView("약 명", "Header"));
-        headerRow.addView(getTextView("선 택", "Header"));
-
-        tableLayout.addView(headerRow);
-    }
-
-    private TextView getTextView(String text, String type) {
+    private TextView getTextView(String text, int width) {
+        Log.i(TAG, "getTextView : " + text);
         TextView textView = new TextView(getApplicationContext());
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        textViewParams.width = dpToPx(width);
+        textView.setLayoutParams(textViewParams);
         textView.setText(text);
+        textView.setTextColor(Color.parseColor("#121111"));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(3, 10, 5, 10);
+        textView.setTypeface(Typeface.createFromAsset(getAssets(), "semaul.ttf"));
+        textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setMaxLines(1);
 
-
-        if (type.equals("Header")) {
-            textView.setTextSize(18);
-            textView.setTypeface(null, Typeface.BOLD);
-        }else {
-            textView.setWidth(350);
-            textView.setTextSize(16);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setMaxLines(1);
-        }
         return textView;
     }
 
-    /* TODO :: 체크박스 가운데 정렬 필요 보기 불편함*/
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
+
     private CheckBox getCheckBox(String medicineCode) {
         CheckBox checkBox = new CheckBox(this);
-        checkBox.setGravity(Gravity.CENTER);
-        checkBox.setPadding(30, 10, 30, 10);
+        checkBox.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+        checkBox.setButtonTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.checkbox_color));
 
         checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
@@ -163,6 +160,10 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
         // 여기서 medicineCombinations 정보를 파이어베이스에 전달하여 정보를 받아온다.
         // 그 후에 Dialog에 정보를 전달하여 정보를 띄운다.
 
+    }
+
+    public void onClickBackButton(View view) {
+        finish();
     }
 
     public void onMyDataTableRowClick(View view, Long id) {

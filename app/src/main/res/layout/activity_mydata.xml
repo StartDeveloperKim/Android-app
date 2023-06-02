@@ -1,117 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#92CBE4"
     tools:context=".layout.MyDataActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="360dp"
+        android:layout_height="61dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="140dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:gravity="center"
-        android:text="약 정보"
-        android:textSize="20sp"
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="뒤로가기"
+            android:onClick="onClickBackButton"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="270dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/semaul"
+            android:gravity="center"
+            android:text="내 데이터 관리"
+            android:textColor="#0C0C0C"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="330dp"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="26dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/semaul"
+            android:gravity="center"
+            android:text="날짜"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="130dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/semaul"
+            android:gravity="center"
+            android:text="약명"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="53dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/semaul"
+            android:gravity="center"
+            android:text="선택"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="327dp"
+        android:layout_height="480dp"
+        android:layout_marginBottom="88dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0">
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:layout_marginTop="80dp"
-        android:background="#00ff00"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="294dp"
-        android:layout_height="427dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_addData"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        app:layout_constraintVertical_bias="0.074">
-
-        <TableLayout
-            android:id="@+id/myData_tableLayout"
+        <LinearLayout
+            android:id="@+id/medicine_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*"
-            app:layout_constraintStart_toStartOf="@+id/scrollView"
-            app:layout_constraintTop_toTopOf="@+id/scrollView">
+            android:orientation="vertical">
 
-            <!-- Dynamic content will go here -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <!--            <TableRow-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content">-->
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="93dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/semaul"
+                    android:text="2023-06-23"
+                    android:textSize="16sp" />
 
-            <!--                <TextView-->
-            <!--                    android:id="@+id/dateTextView"-->
-            <!--                    android:layout_width="0dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="날짜 데이터" />-->
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="188dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/semaul"
+                    android:textSize="16sp"
+                    android:text="타이레놀" />
 
-            <!--                <TextView-->
-            <!--                    android:id="@+id/nameTextView"-->
-            <!--                    android:layout_width="0dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:gravity="center"-->
-            <!--                    android:text="약 명 데이터" />-->
+                <CheckBox
+                    android:id="@+id/checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    />
 
-            <!--                <CheckBox-->
-            <!--                    android:id="@+id/checkBox"-->
-            <!--                    android:layout_width="0dp"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="1"-->
-            <!--                    android:gravity="center" />-->
+            </LinearLayout>
 
-            <!--            </TableRow>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView123"
+                    android:layout_width="93dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/semaul"
+                    android:text="2023-06-23"
+                    android:textSize="16sp" />
 
-        </TableLayout>
+                <TextView
+                    android:id="@+id/textView1523"
+                    android:layout_width="188dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:fontFamily="@font/semaul"
+                    android:textSize="16sp"
+                    android:text="타이레놀" />
 
+                <CheckBox
+                    android:id="@+id/checkBox1251"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_compare"
-        android:layout_width="119dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="64dp"
-        android:onClick="clickCompareButton"
-        android:text="병용 확인"
-        android:enabled="false"
-        android:textSize="14sp"
+    <LinearLayout
+        android:layout_width="361dp"
+        android:layout_height="62dp"
+        android:gravity="center|clip_vertical|top"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
-
-    <Button
-        android:id="@+id/btn_addData"
-        android:layout_width="118dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="56dp"
-        android:onClick="clickAddCustomDataButton"
-        android:text="추가"
-        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2">
 
+        <Button
+            android:id="@+id/btn_addData"
+            android:layout_width="150dp"
+            android:layout_height="49dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button"
+            android:text="데이터 추가"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:onClick="clickAddCustomDataButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.551"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btn_compare"
+            android:layout_width="150dp"
+            android:layout_height="49dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_button"
+            android:text="병용 확인"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:enabled="false"
+            android:onClick="clickCompareButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.551"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
