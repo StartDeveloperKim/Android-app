@@ -1,6 +1,9 @@
 package com.example.aiapplication.layout;
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,7 +51,7 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         userService = UserService.getInstance(getApplicationContext());
         userService.getUsers()
                 .thenAccept(users -> {
-                    drawTableLayoutByUserInfo(users);});
+                    runOnUiThread(() -> drawTableLayoutByUserInfo(users));});
 
     }
 
@@ -87,8 +90,11 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         TextView textView = new TextView(getApplicationContext());
         textView.setLayoutParams(new TableRow.LayoutParams(widthInDp, TableRow.LayoutParams.WRAP_CONTENT));
         textView.setText(text);
+        textView.setTextColor(Color.parseColor("#121111"));
+        textView.setTypeface(Typeface.createFromAsset(getAssets(), "semaul.ttf"));
+        textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER);
-        textView.setPadding(10, 10, 10, 10);
+//        textView.setPadding(10, 10, 10, 10);
 
         return textView;
     }
