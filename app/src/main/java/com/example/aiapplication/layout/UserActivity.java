@@ -108,6 +108,10 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
                 });
     }
 
+    public void onClickBackButtonAtUser(View view){
+        finish();
+    }
+
     @Override
     public void onDismissListener() {
         userService.getUsers()
