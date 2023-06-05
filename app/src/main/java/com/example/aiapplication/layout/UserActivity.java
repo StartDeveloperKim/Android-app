@@ -3,15 +3,12 @@ package com.example.aiapplication.layout;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,17 +17,12 @@ import com.example.aiapplication.layout.dialog.UserProfileDialogFragment;
 import com.example.aiapplication.layout.dialog.UserProfileDialogListener;
 import com.example.aiapplication.user.dao.ActiveUserProfile;
 import com.example.aiapplication.user.dto.UserInfo;
-import com.example.aiapplication.user.entity.Division;
-import com.example.aiapplication.user.entity.Gender;
 import com.example.aiapplication.user.entity.User;
 import com.example.aiapplication.user.service.UserService;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class UserActivity extends AppCompatActivity implements UserProfileDialogListener {
 
@@ -109,7 +101,8 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
         Log.i(TAG, "테이블 로우 클릭" + userId);
         userService.getUserById(userId)
                 .thenAccept(user -> {
-                    UserProfileDialogFragment userProfileDialogFragment = new UserProfileDialogFragment(this, user, activeUserProfile.getActiveUserProfileId());
+                    UserProfileDialogFragment userProfileDialogFragment =
+                            new UserProfileDialogFragment(this, user, activeUserProfile.getActiveUserInfo().getId());
                     userProfileDialogFragment.show(getSupportFragmentManager(), "user_profile_dialog");
                 });
     }
@@ -137,10 +130,12 @@ public class UserActivity extends AppCompatActivity implements UserProfileDialog
     @Override
     public void updateUserInfo(UserInfo userInfo, Long userId) {
         Log.i(TAG, "사용자 정보 수정");
-        userService.getUserById(userId)
-                        .thenAccept(user -> {
-                            activeUserProfile.setActiveUserProfileId(user.getId());
-                        });
+        if (userInfo.getActive()) {
+            userService.getUserById(userId)
+                    .thenAccept(user -> {
+                        activeUserProfile.setActiveUserProfile(user.getId(), user.getName(), user.getAge(), user.getDivision());
+                    });
+        }
 
         userService.getUserById(userId)
                 .thenApply(user -> {

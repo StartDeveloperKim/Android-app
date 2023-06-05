@@ -34,9 +34,13 @@ import com.example.aiapplication.medicine.service.MedicineService;
 import com.example.aiapplication.server.PillCodeController;
 import com.example.aiapplication.server.PillCodeRequester;
 import com.example.aiapplication.user.dao.ActiveUserProfile;
+import com.example.aiapplication.user.dto.ActiveUserInfo;
 import com.example.aiapplication.user.service.UserService;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> galleryResultLauncher;
 
     private Photo photo;
+    private ActiveUserInfo activeUserInfo;
     private ImageInfo imageInfo = ImageInfo.getInstance();
 
     private ActiveUserProfile activeUserProfile;
@@ -232,14 +237,21 @@ public class MainActivity extends AppCompatActivity {
                             try {
                                 Log.i("MainActivity", "body : " + responseBody.string());
                                 loadingDialog.dismissLoadingDialog();
+
+                                JSONObject jsonObject = new JSONObject(responseBody.string());
+                                String medicineCode = jsonObject.getString("result");
+
+
                                 /*
                                 * TODO :: responseBody는 body : {"result":"Detect Nothing"} 이렇게 들어온다.
                                 *  - JSON객체 또는 문자열 파싱으로 result에 대한 value를 가져온다.
                                 *  - Firebase에서 해당되는 key에 대한 값을 찾아온다.
                                 * */
                                 Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
+                                intent.putExtra("medicineCode", medicineCode);
+
                                 startActivity(intent);
-                            } catch (IOException e) {
+                            } catch (IOException | JSONException e) {
                                 throw new RuntimeException(e);
                             }
 //                            try {

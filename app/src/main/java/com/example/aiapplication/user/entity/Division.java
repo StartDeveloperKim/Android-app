@@ -1,15 +1,16 @@
 package com.example.aiapplication.user.entity;
 
-import lombok.Getter;
-
 public enum Division {
-    ADULT("어른"), CHILDREN("어린이"), PREGNANT_WOMAN("임산부"), SENIOR("어르신");
+    ADULT("어른", "AGE"), CHILDREN("어린이", "AGE"),
+    PREGNANT_WOMAN("임산부", "PREGNANT_WOMAN"), SENIOR("어르신", "AGE");
 
     private final String name;
+    private final String DBKey;
 
 
-    Division(String name) {
+    Division(String name, String dbKey) {
         this.name = name;
+        this.DBKey = dbKey;
     }
 
     public static Division getInstance(String value) {
@@ -24,5 +25,9 @@ public enum Division {
 
     public String getName() {
         return name;
+    }
+
+    public String getDBKey() {
+        return DBKey;
     }
 }
