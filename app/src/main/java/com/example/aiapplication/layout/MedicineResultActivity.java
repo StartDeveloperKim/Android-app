@@ -1,9 +1,7 @@
 package com.example.aiapplication.layout;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.aiapplication.MainActivity;
 import com.example.aiapplication.R;
 import com.example.aiapplication.firebase.FirebaseRepository;
 import com.example.aiapplication.firebase.FirebaseSuccessListener;
@@ -19,7 +16,6 @@ import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.medicine.dto.MedicineInfo;
 import com.example.aiapplication.medicine.service.MedicineService;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import javax.annotation.Nullable;
@@ -30,10 +26,11 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
     private FirebaseRepository firebaseRepository;
     private MedicineService medicineService;
 
-    private TextView company;
-    private TextView name;
-    private TextView info;
-    private TextView dangerInfo;
+    private TextView companyTextView;
+    private TextView codeTextView;
+    private TextView nameTextView;
+    private TextView infoTextView;
+    private TextView dangerInfoTextView;
 
     private MedicineInfo medicineInfo;
     private ImageInfo imageInfo;
@@ -45,10 +42,11 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         firebaseRepository = new FirebaseRepository(this);
         medicineService = MedicineService.getInstance(getApplicationContext());
 
-        company = findViewById(R.id.medicine_company);
-        name = findViewById(R.id.medicine_name);
-        info = findViewById(R.id.medicine_effect);
-        dangerInfo = findViewById(R.id.dangerous);
+        companyTextView = findViewById(R.id.company);
+        codeTextView = findViewById(R.id.code);
+        nameTextView = findViewById(R.id.name);
+        infoTextView = findViewById(R.id.info);
+        dangerInfoTextView = findViewById(R.id.danger_info);
 
         /*
         * TODO ::
@@ -72,20 +70,16 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
 
     @Override
     public void onFirebaseDataParsed(MedicineInfo medicineInfo) {
-        setTextView(company, medicineInfo.getCompany());
-        setTextView(name, medicineInfo.getName());
-        setTextView(info, medicineInfo.getInfo());
-        setTextView(dangerInfo, medicineInfo.getDangerInfo());
+        setTextView(companyTextView, medicineInfo.getCompany());
+        setTextView(nameTextView, medicineInfo.getName());
+        setTextView(infoTextView, medicineInfo.getInfo());
+        setTextView(dangerInfoTextView, medicineInfo.getDangerInfo());
 
         this.medicineInfo = medicineInfo;
     }
 
     private void setTextView(TextView view, String message) {
         view.setText(message);
-    }
-
-    private String getText(TextView view) {
-        return (String) view.getText();
     }
 
     public void clickAddDataButton(View view) {
@@ -100,7 +94,7 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         Toast.makeText(getApplicationContext(), "데이터가 추가되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    public void clickCheckButton(View view) {
+    public void onClickBackButtonAtResult(View view) {
         finish();
     }
 }

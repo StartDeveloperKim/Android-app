@@ -1,155 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#92CBE4"
     tools:context=".layout.MedicineResultActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center">
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <ImageView
-            android:id="@+id/medicine_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:maxHeight="300dp"
-            android:maxWidth="300dp" />
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/transparent"
+            android:contentDescription="뒤로가기"
+            app:srcCompat="?attr/actionModeCloseDrawable"
+            android:onClick="onClickBackButtonAtResult"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="258dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/semaul"
+            android:gravity="center"
+            android:text="결과"
+            android:textColor="#0C0C0C"
+            android:textSize="30sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="342dp"
+        android:layout_height="514dp"
+        android:layout_marginTop="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.0">
 
-        <TableLayout
-            android:id="@+id/tableLayout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <TableRow
-                android:id="@+id/medicine_company_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/medicine_image"
+                android:layout_width="247dp"
+                android:layout_height="243dp"
+                android:layout_marginTop="10sp"
+                tools:srcCompat="@tools:sample/avatars" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="제약 회사: "
-                    android:textStyle="bold" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView1"
+                android:layout_width="326dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="#EFE9E9"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="10dp">
 
-                <TextView
-                    android:id="@+id/medicine_company"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start" />
-            </TableRow>
 
-            <TableRow
-                android:id="@+id/medicine_name_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="약 이름: "
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="300sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:fontFamily="@font/semaul"
+                        android:text="명인아캄프로세이트정333mg(아캄프로세이트칼슘)_(0.333g 1정)"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/medicine_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start" />
-            </TableRow>
+                    <TextView
+                        android:id="@+id/company"
+                        android:layout_width="300sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/semaul"
+                        android:text="명인제약(주)"
+                        android:textColor="#4E4B4B" />
 
-            <TableRow
-                android:id="@+id/medicine_code_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/code"
+                        android:layout_width="300sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/semaul"
+                        android:text="code : 651904740"
+                        android:textColor="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="약 코드: "
-                    android:textStyle="bold" />
+                    <View
+                        android:layout_width="300sp"
+                        android:layout_height="4px"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:background="@color/black" />
 
-                <TextView
-                    android:id="@+id/medicine_code"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start" />
-            </TableRow>
+                    <TextView
+                        android:id="@+id/info"
+                        android:layout_width="300sp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/semaul"
+                        android:text="65이상 복용 금지"
+                        android:textColor="#F44336"
+                        android:textSize="24sp" />
 
-            <TableRow
-                android:id="@+id/medicine_effect_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="약 효능: "
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/danger_info"
+                        android:layout_width="300sp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
+                        android:fontFamily="@font/semaul"
+                        android:text="65세 이상에서 안전성 및 유효성 미확립. 연령이 높아질수록 신장기능이 저하되어 이 약이 축적될 수 있음."
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/medicine_effect"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start" />
-            </TableRow>
 
-            <TableRow
-                android:id="@+id/dangerous_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </LinearLayout>
+    </ScrollView>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="위험정보: "
-                    android:textStyle="bold" />
+    <Button
+        android:id="@+id/btn_addData"
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:background="@drawable/rounded_button"
+        android:text="데이터 추가"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:onClick="clickAddDataButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView3"
+        app:layout_constraintVertical_bias="0.318" />
 
-                <TextView
-                    android:id="@+id/dangerous"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start" />
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_addData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="내부 저장소에 추가"
-            android:onClick="clickAddDataButton" />
-
-        <Button
-            android:id="@+id/btn_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="확인"
-            android:onClick="clickCheckButton" />
-
-    </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
