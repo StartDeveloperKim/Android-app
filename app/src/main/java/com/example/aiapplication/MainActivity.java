@@ -1,8 +1,11 @@
 package com.example.aiapplication;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.layout.MedicineResultActivity;
 import com.example.aiapplication.layout.MyDataActivity;
 import com.example.aiapplication.layout.UserActivity;
+import com.example.aiapplication.layout.dialog.LoadingDialog;
 import com.example.aiapplication.medicine.service.MedicineService;
 import com.example.aiapplication.server.PillCodeController;
 import com.example.aiapplication.server.PillCodeRequester;
@@ -215,6 +220,9 @@ public class MainActivity extends AppCompatActivity {
             RequestBody requestBody = RequestBody.create(imageFile, MediaType.parse("image/*"));
             MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
             Call<ResponseBody> call = pillCodeController.detectImage(imagePart);
+
+            LoadingDialog loadingDialog = new LoadingDialog(this);
+            loadingDialog.showLoadingDialog();
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -223,16 +231,17 @@ public class MainActivity extends AppCompatActivity {
                         if (responseBody != null) {
                             try {
                                 Log.i("MainActivity", "body : " + responseBody.string());
+                                loadingDialog.dismissLoadingDialog();
                                 /*
                                 * TODO :: responseBody는 body : {"result":"Detect Nothing"} 이렇게 들어온다.
                                 *  - JSON객체 또는 문자열 파싱으로 result에 대한 value를 가져온다.
                                 *  - Firebase에서 해당되는 key에 대한 값을 찾아온다.
                                 * */
+                                Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
+                                startActivity(intent);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                            Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
-                            startActivity(intent);
 //                            try {
 ////                                String responseString = String.valueOf(responseBody.byteString());
 ////                                JSONObject jsonObject = new JSONObject(responseString);
@@ -256,12 +265,14 @@ public class MainActivity extends AppCompatActivity {
 //                            }
                         }
                     }else {
+                        loadingDialog.dismissLoadingDialog();
                         showToastMessage("서버에서 잘못된 응답이 왔습니다.");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    loadingDialog.dismissLoadingDialog();
                     showToastMessage("서버와의 통신이 실패했습니다.");
                     t.printStackTrace();
                 }
