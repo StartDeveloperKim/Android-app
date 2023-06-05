@@ -1,11 +1,8 @@
 package com.example.aiapplication;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,7 +10,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +31,7 @@ import com.example.aiapplication.server.PillCodeController;
 import com.example.aiapplication.server.PillCodeRequester;
 import com.example.aiapplication.user.dao.ActiveUserProfile;
 import com.example.aiapplication.user.dto.ActiveUserInfo;
+import com.example.aiapplication.user.entity.Division;
 import com.example.aiapplication.user.service.UserService;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -66,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> galleryResultLauncher;
 
     private Photo photo;
-    private ActiveUserInfo activeUserInfo;
     private ImageInfo imageInfo = ImageInfo.getInstance();
 
     private ActiveUserProfile activeUserProfile;
@@ -96,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         UserService.getInstance(getApplicationContext());
 
         activeUserProfile = ActiveUserProfile.getInstance(this);
+        ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
+
         photo = new Photo(); // 카메라 인스턴스 생성
         pillCodeController = PillCodeRequester.getApiService();
 
@@ -149,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
 
     }
 
@@ -214,6 +213,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickImageAnalyzeButton(View view) {
         if (imageInfo.getBitmap().isPresent()) {
+            /*
+            * TODO :: ActivieUser가 설정되어있지 않은경우 분석 페이지로 넘어가지 못한다.
+            * */
             Log.i("MainActivity", "결과 페이지로 INTENT 시도");
             /*
              * TODO :: 2023-05-21
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
                         ResponseBody responseBody = response.body();
                         if (responseBody != null) {
                             try {
-                                Log.i("MainActivity", "body : " + responseBody.string());
+                                Log.i("MainActivity", "body");
                                 loadingDialog.dismissLoadingDialog();
 
                                 JSONObject jsonObject = new JSONObject(responseBody.string());
@@ -247,8 +249,11 @@ public class MainActivity extends AppCompatActivity {
                                 *  - JSON객체 또는 문자열 파싱으로 result에 대한 value를 가져온다.
                                 *  - Firebase에서 해당되는 key에 대한 값을 찾아온다.
                                 * */
+                                ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
                                 Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
                                 intent.putExtra("medicineCode", medicineCode);
+                                intent.putExtra("age", activeUserInfo.getAge());
+                                intent.putExtra("dbKey", Division.getDBKey(activeUserInfo.getDivision()));
 
                                 startActivity(intent);
                             } catch (IOException | JSONException e) {

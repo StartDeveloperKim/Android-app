@@ -20,7 +20,15 @@ public enum Division {
             }
         }
         throw new IllegalArgumentException("Invalid Division value: " + value);
+    }
 
+    public static String getDBKey(String value) {
+        for (Division division : Division.values()) {
+            if (division.getName().equals(value)) {
+                return division.getDBKey();
+            }
+        }
+        throw new IllegalArgumentException("Invalid Division value: " + value);
     }
 
     public String getName() {

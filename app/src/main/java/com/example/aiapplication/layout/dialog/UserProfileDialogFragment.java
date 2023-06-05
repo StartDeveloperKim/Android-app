@@ -147,8 +147,10 @@ public class UserProfileDialogFragment extends DialogFragment {
             divisionRadioBtn = dialogView.findViewById(R.id.rb_child);
         } else if (user.equalsDivision(Division.SENIOR)) {
             divisionRadioBtn = dialogView.findViewById(R.id.rb_elderly);
-        }else{
+        }else if (user.equalsDivision(Division.PREGNANT_WOMAN)){
             divisionRadioBtn = dialogView.findViewById(R.id.rb_pregnant);
+        }else {
+            divisionRadioBtn = dialogView.findViewById(R.id.rb_adult);
         }
         divisionRadioBtn.setChecked(true);
     }

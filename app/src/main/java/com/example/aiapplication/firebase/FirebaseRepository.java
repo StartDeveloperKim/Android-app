@@ -1,5 +1,6 @@
 package com.example.aiapplication.firebase;
 
+import com.example.aiapplication.firebase.policy.MedicinePolicy;
 import com.example.aiapplication.medicine.dto.MedicineInfo;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -14,18 +15,12 @@ public class FirebaseRepository {
         this.listener = firebaseSuccessListener;
     }
 
-    public void getMedicineInfo(String medicineCode, String collectionName) {
+    public void getMedicineInfo(String code, String collectionName, int age, MedicinePolicy medicinePolicy) {
         db.collection(collectionName)
-                .document(medicineCode).get()
+                .document(code).get()
                 .addOnSuccessListener(result -> {
-                    String company = result.get("company", String.class);
-                    String name = result.get("name", String.class);
-                    String info = result.get("info", String.class);
-                    String dangerInfo = result.get("age_limit", String.class);
-                    MedicineInfo medicineInfo = new MedicineInfo(medicineCode, company, name, info, dangerInfo);
-
+                    MedicineInfo medicineInfo = medicinePolicy.getMedicineInfo(result, age, code);
                     listener.onFirebaseDataParsed(medicineInfo);
                 });
-
     }
 }
