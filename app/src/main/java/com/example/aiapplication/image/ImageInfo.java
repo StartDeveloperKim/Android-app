@@ -1,9 +1,18 @@
 package com.example.aiapplication.image;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class ImageInfo {
 
@@ -25,5 +34,23 @@ public class ImageInfo {
 
     public Optional<Bitmap> getBitmap() {
         return bitmap;
+    }
+
+    public File convertBitmapToFile(Context context) {
+        File file = new File(context.getApplicationContext().getCacheDir(), UUID.randomUUID().toString() + ".png");
+
+        try(FileOutputStream fileOutputStream = new FileOutputStream(file);) {
+            getBitmap()
+                    .get()
+                    .compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
