@@ -94,8 +94,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="349dp"
-        android:layout_height="204dp"
+        android:layout_width="350dp"
+        android:layout_height="134dp"
         app:cardBackgroundColor="#EFE9E9"
         app:cardCornerRadius="16dp"
         app:cardElevation="10dp"
@@ -108,7 +108,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_gallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="갤러리에서 사진 선택하기"
+                android:onClick="clickGalleryButton"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/gallery_btn" />
 
             <ImageButton
                 android:id="@+id/btn_analyze"
@@ -118,6 +130,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="사진 분석하기"
                 android:onClick="clickImageAnalyzeButton"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/medicine_result_btn" />
 
             <ImageButton
@@ -128,9 +141,23 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="나의 데이터 확인"
                 android:onClick="clickMyDataButton"
+                android:scaleType="fitXY"
                 app:srcCompat="@drawable/mydata_btn" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="made by Go Moon Han Kim"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        app:layout_constraintVertical_bias="0.757" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

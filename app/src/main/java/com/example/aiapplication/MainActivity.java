@@ -3,12 +3,10 @@ package com.example.aiapplication;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,13 +30,8 @@ import com.example.aiapplication.server.PillCodeController;
 import com.example.aiapplication.server.PillCodeRequester;
 import com.example.aiapplication.user.dao.ActiveUserProfile;
 import com.example.aiapplication.user.service.UserService;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int TIME_INTERVAL = 2000;
     private long backPressedTime;
 
-    private ActivityResultLauncher<Intent> resultLauncher;
+    private ActivityResultLauncher<Intent> cameraResultLauncher;
+    private ActivityResultLauncher<Intent> galleryResultLauncher;
 
     private Photo photo;
     private ImageInfo imageInfo = ImageInfo.getInstance();
@@ -103,12 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 .setPermissions(android.Manifest.permission.CAMERA, android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check();
 
+
         if (imageInfo.getBitmap().isPresent()) {
             setImageView(imageInfo.getBitmap().get());
         }
 
 
-        resultLauncher = registerForActivityResult(
+        cameraResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -118,6 +113,28 @@ public class MainActivity extends AppCompatActivity {
                             addCameraTextMessage();
                             setImageView(bitmap);
                             imageInfo.setBitmap(bitmap);
+                        }
+                    }
+                }
+        );
+
+        galleryResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if(result.getResultCode() == RESULT_OK) {
+                            Intent intent = result.getData();
+                            Uri uri = intent.getData();
+
+                            try {
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                                imageInfo.setBitmap(bitmap);
+                                setImageView(bitmap);
+                                addCameraTextMessage();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -158,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri photoUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), photoFile);
                 photo.setPhotoUri(photoUri);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                resultLauncher.launch(intent);
+                cameraResultLauncher.launch(intent);
             }
         }
     }
@@ -171,6 +188,13 @@ public class MainActivity extends AppCompatActivity {
     public void clickMyDataButton(View view) {
         Intent intent = new Intent(getApplicationContext(), MyDataActivity.class);
         startActivity(intent);
+    }
+
+    public void clickGalleryButton(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        galleryResultLauncher.launch(intent);
     }
 
     public void clickSettingButton(View view) {
