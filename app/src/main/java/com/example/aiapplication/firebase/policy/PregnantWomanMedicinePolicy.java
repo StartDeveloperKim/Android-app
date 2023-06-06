@@ -9,6 +9,6 @@ public class PregnantWomanMedicinePolicy implements MedicinePolicy{
         String name = result.getString("name");
         String company = result.getString("company");
         String dangerInfo = result.getString("info");
-        return new MedicineInfo(code, company, name, "", dangerInfo);
+        return new MedicineInfo(code, company, name, "해당 약은 임부금기 약품입니다.", dangerInfo);
     }
 }

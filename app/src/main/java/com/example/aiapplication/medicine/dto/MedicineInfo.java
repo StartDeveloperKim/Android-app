@@ -39,9 +39,9 @@ public class MedicineInfo {
         stringBuilder.append(info);
 
         if (isTaken) {
-            stringBuilder.append("이기에 복용이 불가능합니다.");
-        }else{
             stringBuilder.append("이(가) 아니기에 복용이 가능합니다.");
+        }else{
+            stringBuilder.append("이기에 복용이 불가능합니다.");
         }
         return stringBuilder.toString();
     }
@@ -53,7 +53,7 @@ public class MedicineInfo {
     }
 
     public void setInfoTextColor(TextView textView) {
-        if (!isTaken) {
+        if (isTaken) {
             textView.setTextColor(Color.parseColor("#4CAF50"));
         }
     }

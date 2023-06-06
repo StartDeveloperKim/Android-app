@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         UserService.getInstance(getApplicationContext());
 
         activeUserProfile = ActiveUserProfile.getInstance(this);
-        ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
 
         photo = new Photo(); // 카메라 인스턴스 생성
         pillCodeController = PillCodeRequester.getApiService();
@@ -148,7 +147,18 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        setTextViewActiveUserProfile();
+    }
 
+    private void setTextViewActiveUserProfile() {
+        ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
+        TextView nameTextView = findViewById(R.id.name);
+        TextView ageTextView = findViewById(R.id.age);
+        TextView divisionTextView = findViewById(R.id.division);
+
+        nameTextView.setText(activeUserInfo.getName());
+        ageTextView.setText(String.valueOf(activeUserInfo.getAge()));
+        divisionTextView.setText(activeUserInfo.getDivision());
     }
 
     private void setImageView(Bitmap bitmap) {
@@ -213,16 +223,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickImageAnalyzeButton(View view) {
         if (imageInfo.getBitmap().isPresent()) {
-            /*
-            * TODO :: ActivieUser가 설정되어있지 않은경우 분석 페이지로 넘어가지 못한다.
-            * */
             Log.i("MainActivity", "결과 페이지로 INTENT 시도");
-            /*
-             * TODO :: 2023-05-21
-             *  1. 여기서 찍은 이미지를 AI에 넘겨줘야 한다.
-             *  2. 지금은 촬영 후 결과 페이지에 bitmap 데이터를 넘겨주기만 한다. => MedicineResultActivity
-             *   - 후보2 : HTTP 통신 프로토콜을 활용해서 서버에 띄어져있는 AI 모델에게 사진을 전달한 후 DB에서 정보를 가져온다.
-             * */
+
             File imageFile = imageInfo.convertBitmapToFile(getApplicationContext());
             RequestBody requestBody = RequestBody.create(imageFile, MediaType.parse("image/*"));
             MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), requestBody);
@@ -243,13 +245,8 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(responseBody.string());
                                 String medicineCode = jsonObject.getString("result");
 
-
-                                /*
-                                * TODO :: responseBody는 body : {"result":"Detect Nothing"} 이렇게 들어온다.
-                                *  - JSON객체 또는 문자열 파싱으로 result에 대한 value를 가져온다.
-                                *  - Firebase에서 해당되는 key에 대한 값을 찾아온다.
-                                * */
                                 ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
+                                Log.i("MainActivity", "Name : " + activeUserInfo.getName() + "// Age : " + activeUserInfo.getAge());
                                 Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
                                 intent.putExtra("medicineCode", medicineCode);
                                 intent.putExtra("age", activeUserInfo.getAge());
@@ -259,27 +256,6 @@ public class MainActivity extends AppCompatActivity {
                             } catch (IOException | JSONException e) {
                                 throw new RuntimeException(e);
                             }
-//                            try {
-////                                String responseString = String.valueOf(responseBody.byteString());
-////                                JSONObject jsonObject = new JSONObject(responseString);
-////
-////                                String result = jsonObject.getString("result");
-////                                String imageBase64 = jsonObject.getString("image");
-////
-////                                Log.i("MainActivity", "이미지 검출" + result);
-////
-////                                byte[] decodedBytes = Base64.decode(imageBase64, Base64.DEFAULT);
-////                                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-//
-//                                // TODO :: 전달된 Response를 intent할 때 넘겨주자 여기서 Response는 알약코드 or "Detect Nothing"문구이다.
-//                                // TODO :: 그리고 시간이된다면 로딩화면도 구현하자. 명진이 알람도 코드에 결합시켜야함. 결과 UI도 꾸며야함. 병용여부 Dialog도 만들어야한다.
-//                                Intent intent = new Intent(getApplicationContext(), MedicineResultActivity.class);
-//                                startActivity(intent);
-//                            } catch (JSONException e) {
-//                                throw new RuntimeException(e);
-//                            } catch (IOException e) {
-//                                throw new RuntimeException(e);
-//                            }
                         }
                     }else {
                         loadingDialog.dismissLoadingDialog();

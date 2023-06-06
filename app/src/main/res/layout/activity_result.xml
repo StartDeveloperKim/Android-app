@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#92CBE4"
@@ -25,8 +26,8 @@
             android:layout_gravity="start"
             android:background="@android:color/transparent"
             android:contentDescription="뒤로가기"
-            app:srcCompat="?attr/actionModeCloseDrawable"
-            android:onClick="onClickBackButtonAtResult"/>
+            android:onClick="onClickBackButtonAtResult"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <TextView
             android:id="@+id/textView4"
@@ -126,6 +127,14 @@
 
 
                     <TextView
+                        android:id="@+id/tag1"
+                        android:layout_width="301dp"
+                        android:layout_height="20dp"
+                        android:fontFamily="@font/semaul"
+                        android:gravity="bottom"
+                        android:text="[복용 시 주의사항]" />
+
+                    <TextView
                         android:id="@+id/danger_info"
                         android:layout_width="300sp"
                         android:layout_height="wrap_content"
@@ -147,11 +156,11 @@
         android:layout_width="350dp"
         android:layout_height="70dp"
         android:background="@drawable/rounded_button"
+        android:onClick="clickAddDataButton"
         android:text="데이터 추가"
         android:textColor="#fff"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:onClick="clickAddDataButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

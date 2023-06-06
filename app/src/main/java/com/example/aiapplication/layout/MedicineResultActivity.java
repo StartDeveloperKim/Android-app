@@ -53,12 +53,6 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         infoTextView = findViewById(R.id.info);
         dangerInfoTextView = findViewById(R.id.danger_info);
 
-        /*
-        * TODO ::
-        *  - 현재는 단순히 찍은 이미지를 ImageView로 보여주고 있는데 해당 이미지 데이터를
-        *    AI로 분석하는 로직을 아래에 작성해야 한다.
-        * */
-
         imageInfo = ImageInfo.getInstance();
         Bitmap bitmap = imageInfo.getBitmap().orElseThrow(IllegalArgumentException::new);
         ImageView imageView = findViewById(R.id.medicine_image);
