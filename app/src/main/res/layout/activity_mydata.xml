@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="360dp"
-        android:layout_height="61dp"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,14 +31,23 @@
 
         <TextView
             android:id="@+id/textView4"
-            android:layout_width="270dp"
-            android:layout_height="match_parent"
+            android:layout_width="257dp"
+            android:layout_height="62dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/semaul"
             android:gravity="center"
             android:text="내 데이터 관리"
             android:textColor="#0C0C0C"
             android:textSize="30sp" />
+
+        <ImageButton
+            android:id="@+id/btn_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="onClickAlarmButton"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
     </LinearLayout>
 
     <LinearLayout

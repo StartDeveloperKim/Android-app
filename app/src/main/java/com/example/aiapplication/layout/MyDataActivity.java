@@ -1,5 +1,6 @@
 package com.example.aiapplication.layout;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,20 +22,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.aiapplication.R;
+import com.example.aiapplication.alarm.AlarmActivity;
 import com.example.aiapplication.layout.dialog.MedicineDialogFragment;
 import com.example.aiapplication.layout.dialog.MedicineDialogListener;
+import com.example.aiapplication.medicine.dto.MedicineAlarmDto;
 import com.example.aiapplication.medicine.entity.Medicine;
 import com.example.aiapplication.medicine.service.MedicineCombinationUtil;
 import com.example.aiapplication.medicine.service.MedicineService;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 
 public class MyDataActivity extends AppCompatActivity implements MedicineDialogListener {
 
@@ -179,6 +184,23 @@ public class MyDataActivity extends AppCompatActivity implements MedicineDialogL
         } catch (TimeoutException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void onClickAlarmButton(View view) {
+        medicineService.getMedicines()
+                .thenApply(medicines -> {
+                    List<MedicineAlarmDto> medicineAlarmDtos = medicines.stream()
+                            .map(medicine -> new MedicineAlarmDto(medicine.getId(), medicine.getName()))
+                            .collect(Collectors.toList());
+                    return medicineAlarmDtos;
+                })
+                .thenAccept(medicineAlarmDtos -> {
+                    Intent intent = new Intent(this, AlarmActivity.class);
+                    intent.putExtra("medicine_list", (Serializable) medicineAlarmDtos);
+                    startActivity(intent);
+                });
+//        Intent intent = new Intent(this, AlarmActivity.class);
+//        startActivity(intent);
     }
 
     @Override
