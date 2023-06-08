@@ -2,6 +2,7 @@ package com.example.aiapplication.layout;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,10 +18,17 @@ import com.example.aiapplication.firebase.policy.MedicinePolicyFactory;
 import com.example.aiapplication.image.ImageInfo;
 import com.example.aiapplication.medicine.dto.MedicineInfo;
 import com.example.aiapplication.medicine.service.MedicineService;
+import com.example.aiapplication.server.s3.S3ImageController;
+import com.example.aiapplication.server.s3.S3ImageDownloader;
 
 import java.io.ByteArrayOutputStream;
 
 import javax.annotation.Nullable;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MedicineResultActivity extends AppCompatActivity implements FirebaseSuccessListener {
 
@@ -28,6 +36,9 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
     private static final String MEDICINE_CODE = "medicineCode";
     private static final String AGE = "age";
     private static final String DB_KEY = "dbKey";
+    private static final String DETECT_IMAGE_URL = "detect_image_url";
+
+    private S3ImageController s3ImageController;
     private FirebaseRepository firebaseRepository;
     private MedicineService medicineService;
 
@@ -45,6 +56,7 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
         firebaseRepository = new FirebaseRepository(this);
+        s3ImageController = S3ImageDownloader.getApiService();
         medicineService = MedicineService.getInstance(getApplicationContext());
 
         companyTextView = findViewById(R.id.company);
@@ -69,8 +81,33 @@ public class MedicineResultActivity extends AppCompatActivity implements Firebas
         String medicineCode = extras.getString(MEDICINE_CODE);
         int age = extras.getInt(AGE);
         String dbKey = extras.getString(DB_KEY);
+        String detectImageURL = extras.getString(DETECT_IMAGE_URL);
+
+        setDetectImageView(detectImageURL);
 
         firebaseRepository.getMedicineInfo(medicineCode, dbKey, age, MedicinePolicyFactory.getMedicinePolicyInstance(dbKey));
+    }
+
+    private void setDetectImageView(String detectImageURL) {
+        Call<ResponseBody> detectImage = s3ImageController.getDetectImage(detectImageURL);
+        detectImage.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ResponseBody body = response.body();
+                    Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
+                    ImageView imageView = findViewById(R.id.medicine_image);
+                    imageView.setImageBitmap(bitmap);
+                }else{
+                    Toast.makeText(getApplicationContext(), "이미지 다운로드 응답이 없습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "이미지 다운로드에 실패했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

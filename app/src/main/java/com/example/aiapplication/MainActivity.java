@@ -244,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 JSONObject jsonObject = new JSONObject(responseBody.string());
                                 String medicineCode = jsonObject.getString("result");
+                                String detectImageURL = jsonObject.getString("url");
 
                                 ActiveUserInfo activeUserInfo = activeUserProfile.getActiveUserInfo();
                                 Log.i("MainActivity", "Name : " + activeUserInfo.getName() + "// Age : " + activeUserInfo.getAge());
@@ -251,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
                                 intent.putExtra("medicineCode", medicineCode);
                                 intent.putExtra("age", activeUserInfo.getAge());
                                 intent.putExtra("dbKey", Division.getDBKey(activeUserInfo.getDivision()));
+                                intent.putExtra("detect_image_url", detectImageURL);
 
                                 startActivity(intent);
                             } catch (IOException | JSONException e) {
